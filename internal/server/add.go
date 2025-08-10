@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"bufio"
@@ -9,10 +9,11 @@ import (
 	"syscall"
 
 	"golang.org/x/term"
+	"rexec/internal/config"
 )
 
-// addServer 添加服务器配置
-func addServer(ip, port, name, osType string) error {
+// AddServer 添加服务器配置
+func AddServer(ip, port, name, osType string) error {
 	// 验证端口号
 	if _, err := strconv.Atoi(port); err != nil {
 		return fmt.Errorf("invalid port number: %s", port)
@@ -32,7 +33,7 @@ func addServer(ip, port, name, osType string) error {
 		return fmt.Errorf("username cannot be empty")
 	}
 	
-	serverConfig := ServerConfig{
+	serverConfig := config.ServerConfig{
 		Name:     name,
 		IP:       ip,
 		Port:     port,
@@ -96,7 +97,7 @@ func addServer(ip, port, name, osType string) error {
 	}
 	
 	// 保存配置
-	if err := addServerConfig(serverConfig); err != nil {
+	if err := config.AddServerConfig(serverConfig); err != nil {
 		return err
 	}
 	

@@ -1,16 +1,19 @@
-package main
+package executor
 
 import (
 	"fmt"
 	"io"
 	"os"
 	"strings"
+
+	"rexec/internal/config"
+	"rexec/internal/ssh"
 )
 
-// executeRemoteCommand 在远程服务器上执行命令并实时输出
-func executeRemoteCommand(serverName string, command string, args []string) error {
+// ExecuteRemoteCommand 在远程服务器上执行命令并实时输出
+func ExecuteRemoteCommand(serverName string, command string, args []string) error {
 	// 查找服务器配置
-	server, err := findServer(serverName)
+	server, err := config.FindServer(serverName)
 	if err != nil {
 		return err
 	}
@@ -22,7 +25,7 @@ func executeRemoteCommand(serverName string, command string, args []string) erro
 	fmt.Println("----------------------------------------")
 	
 	// 创建SSH连接
-	client, err := createSSHClient(server)
+	client, err := ssh.NewClient(server)
 	if err != nil {
 		return fmt.Errorf("connection failed: %v", err)
 	}
@@ -60,10 +63,10 @@ func executeRemoteCommand(serverName string, command string, args []string) erro
 	return nil
 }
 
-// executeRemoteCommandInteractive 交互式执行远程命令（支持实时输入输出）
-func executeRemoteCommandInteractive(serverName string, command string, args []string) error {
+// ExecuteRemoteCommandInteractive 交互式执行远程命令（支持实时输入输出）
+func ExecuteRemoteCommandInteractive(serverName string, command string, args []string) error {
 	// 查找服务器配置
-	server, err := findServer(serverName)
+	server, err := config.FindServer(serverName)
 	if err != nil {
 		return err
 	}
@@ -75,7 +78,7 @@ func executeRemoteCommandInteractive(serverName string, command string, args []s
 	fmt.Println("----------------------------------------")
 	
 	// 创建SSH连接
-	client, err := createSSHClient(server)
+	client, err := ssh.NewClient(server)
 	if err != nil {
 		return fmt.Errorf("connection failed: %v", err)
 	}

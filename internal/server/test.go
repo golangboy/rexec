@@ -1,14 +1,17 @@
-package main
+package server
 
 import (
 	"fmt"
 	"strings"
+
+	"rexec/internal/config"
+	"rexec/internal/ssh"
 )
 
-// testConnection 测试与指定服务器的连接
-func testConnection(serverName string) error {
+// TestConnection 测试与指定服务器的连接
+func TestConnection(serverName string) error {
 	// 查找服务器配置
-	server, err := findServer(serverName)
+	server, err := config.FindServer(serverName)
 	if err != nil {
 		return err
 	}
@@ -16,7 +19,7 @@ func testConnection(serverName string) error {
 	fmt.Printf("Testing connection to server '%s' (%s:%s)...\n", serverName, server.IP, server.Port)
 	
 	// 创建SSH连接
-	client, err := createSSHClient(server)
+	client, err := ssh.NewClient(server)
 	if err != nil {
 		return fmt.Errorf("connection failed: %v", err)
 	}
@@ -27,7 +30,7 @@ func testConnection(serverName string) error {
 	
 	// 获取系统信息
 	fmt.Println("Gathering system information...")
-	sysInfo, err := getSystemInfo(client, server.OS)
+	sysInfo, err := client.GetSystemInfo(server.OS)
 	if err != nil {
 		return fmt.Errorf("failed to get system info: %v", err)
 	}

@@ -3,6 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"rexec/internal/server"
+	"rexec/pkg/connector"
 )
 
 func main() {
@@ -28,7 +31,7 @@ func main() {
 			return
 		}
 		
-		err := addServer(ip, port, name, osType)
+		err := server.AddServer(ip, port, name, osType)
 		if err != nil {
 			fmt.Printf("Failed to add server: %v\n", err)
 			return
@@ -47,7 +50,7 @@ func main() {
 			args = os.Args[4:]
 		}
 		
-		err := executeRemoteCommandByOS(serverName, execCommand, args)
+		err := connector.ExecuteRemoteCommandByOS(serverName, execCommand, args)
 		if err != nil {
 			fmt.Printf("Execution failed: %v\n", err)
 			return
@@ -56,7 +59,7 @@ func main() {
 	default:
 		// Check if command is a server name for test
 		if len(os.Args) == 3 && os.Args[2] == "test" {
-			err := testConnectionByOS(command)
+			err := connector.TestConnectionByOS(command)
 			if err != nil {
 				fmt.Printf("Test failed: %v\n", err)
 				return

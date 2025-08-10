@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"fmt"
@@ -42,8 +42,8 @@ func getConfigPath() (string, error) {
 	return filepath.Join(configDir, "config.yaml"), nil
 }
 
-// loadConfig 加载配置文件
-func loadConfig() (*Config, error) {
+// LoadConfig 加载配置文件
+func LoadConfig() (*Config, error) {
 	configPath, err := getConfigPath()
 	if err != nil {
 		return nil, err
@@ -70,8 +70,8 @@ func loadConfig() (*Config, error) {
 	return config, nil
 }
 
-// saveConfig 保存配置文件
-func saveConfig(config *Config) error {
+// SaveConfig 保存配置文件
+func SaveConfig(config *Config) error {
 	configPath, err := getConfigPath()
 	if err != nil {
 		return err
@@ -89,9 +89,9 @@ func saveConfig(config *Config) error {
 	return nil
 }
 
-// findServer 根据名称查找服务器配置
-func findServer(name string) (*ServerConfig, error) {
-	config, err := loadConfig()
+// FindServer 根据名称查找服务器配置
+func FindServer(name string) (*ServerConfig, error) {
+	config, err := LoadConfig()
 	if err != nil {
 		return nil, err
 	}
@@ -105,9 +105,9 @@ func findServer(name string) (*ServerConfig, error) {
 	return nil, fmt.Errorf("server '%s' not found", name)
 }
 
-// addServerConfig 添加服务器配置
-func addServerConfig(serverConfig ServerConfig) error {
-	config, err := loadConfig()
+// AddServerConfig 添加服务器配置
+func AddServerConfig(serverConfig ServerConfig) error {
+	config, err := LoadConfig()
 	if err != nil {
 		return err
 	}
@@ -121,5 +121,5 @@ func addServerConfig(serverConfig ServerConfig) error {
 	
 	config.Servers = append(config.Servers, serverConfig)
 	
-	return saveConfig(config)
+	return SaveConfig(config)
 }

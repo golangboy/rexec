@@ -1,16 +1,23 @@
-package main
+package ssh
 
 import (
 	"fmt"
 	"net"
 	"os"
-	"time"
 	"strings"
+	"time"
+
 	"golang.org/x/crypto/ssh"
+	"rexec/internal/config"
 )
 
-// createSSHClient 创建SSH客户端连接
-func createSSHClient(server *ServerConfig) (*ssh.Client, error) {
+// Client SSH客户端封装
+type Client struct {
+	*ssh.Client
+}
+
+// NewClient 创建SSH客户端连接
+func NewClient(server *config.ServerConfig) (*Client, error) {
 	var auth []ssh.AuthMethod
 	
 	// 根据认证类型设置认证方法
@@ -29,7 +36,7 @@ func createSSHClient(server *ServerConfig) (*ssh.Client, error) {
 		return nil, fmt.Errorf("unsupported auth type: %s", server.AuthType)
 	}
 	
-	config := &ssh.ClientConfig{
+	sshConfig := &ssh.ClientConfig{
 		User:            server.Username,
 		Auth:            auth,
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(), // 注意：生产环境中应该验证主机密钥
@@ -37,12 +44,12 @@ func createSSHClient(server *ServerConfig) (*ssh.Client, error) {
 	}
 	
 	address := net.JoinHostPort(server.IP, server.Port)
-	client, err := ssh.Dial("tcp", address, config)
+	client, err := ssh.Dial("tcp", address, sshConfig)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to %s: %v", address, err)
 	}
 	
-	return client, nil
+	return &Client{Client: client}, nil
 }
 
 // createKeyAuth 创建密钥认证
@@ -60,9 +67,9 @@ func createKeyAuth(keyPath string) (ssh.AuthMethod, error) {
 	return ssh.PublicKeys(signer), nil
 }
 
-// executeCommand 在远程服务器上执行命令
-func executeCommand(client *ssh.Client, command string) (string, error) {
-	session, err := client.NewSession()
+// ExecuteCommand 在远程服务器上执行命令
+func (c *Client) ExecuteCommand(command string) (string, error) {
+	session, err := c.NewSession()
 	if err != nil {
 		return "", fmt.Errorf("failed to create session: %v", err)
 	}
@@ -76,8 +83,8 @@ func executeCommand(client *ssh.Client, command string) (string, error) {
 	return string(output), nil
 }
 
-// getSystemInfo 获取系统信息
-func getSystemInfo(client *ssh.Client, osType string) (map[string]string, error) {
+// GetSystemInfo 获取系统信息
+func (c *Client) GetSystemInfo(osType string) (map[string]string, error) {
 	info := make(map[string]string)
 	var commands map[string]string
 	
@@ -108,7 +115,7 @@ func getSystemInfo(client *ssh.Client, osType string) (map[string]string, error)
 	}
 	
 	for key, command := range commands {
-		output, err := executeCommand(client, command)
+		output, err := c.ExecuteCommand(command)
 		if err != nil {
 			info[key] = fmt.Sprintf("Error: %v", err)
 		} else {
