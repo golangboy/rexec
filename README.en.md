@@ -1,10 +1,10 @@
-# rexec - Remote Execution Tool
+# 🚀 rexec - Remote Execution Tool
 
 [中文版](README.md) | **English**
 
 rexec is a simple remote execution tool that supports remote connection and basic system information retrieval for both Linux and Windows servers.
 
-## Features
+## ✨ Features
 
 - Add and manage remote Linux and Windows servers
 - Unified SSH protocol connection for all servers (both Linux and Windows)
@@ -13,7 +13,7 @@ rexec is a simple remote execution tool that supports remote connection and basi
 - Connection testing functionality with remote system information retrieval
 - Remote command execution with output redirection to local terminal
 
-## Installation
+## 📦 Installation
 
 1. Ensure Go 1.21 or higher is installed
 2. Clone or download the project code
@@ -24,9 +24,9 @@ go mod tidy
 go build -o rexec
 ```
 
-## Usage
+## 🔧 Usage
 
-### Adding Servers
+### ➕ Adding Servers
 
 **Add Linux server:**
 ```bash
@@ -51,7 +51,7 @@ After running this command, the system will prompt you to enter:
 
 **Note:** Windows servers require OpenSSH Server service to be installed and enabled.
 
-### Testing Connection
+### 🔍 Testing Connection
 
 ```bash
 rexec <Server_Name> test
@@ -75,7 +75,7 @@ This command will connect to the specified server and retrieve system informatio
 - System uptime, CPU information, memory information
 - C drive usage
 
-### Remote Command Execution
+### ⚡ Remote Command Execution
 
 ```bash
 rexec exec <Server_Name> <Command> [Arguments...]
@@ -117,11 +117,11 @@ Key Features:
 - Automatic special character escaping to prevent injection attacks
 - Support for standard input, output, and error streams
 
-## Configuration File
+## ⚙️ Configuration File
 
 Server configuration information is stored in the `.rexec/config.yaml` file in the user's home directory. This file contains all added server information (passwords are securely handled).
 
-## Important Notes
+## ⚠️ Important Notes
 
 **General:**
 - Sensitive information (such as passwords) in the configuration file is stored in plain text, please ensure system security
@@ -133,7 +133,7 @@ Server configuration information is stored in the `.rexec/config.yaml` file in t
 - Windows 10 version 1809 and above have built-in OpenSSH support
 - Older Windows versions require manual OpenSSH Server installation
 
-## Future Plans
+## 🗺️ Future Plans
 
 - Support for macOS systems
 - Enhanced security (encrypted password storage, host key verification)

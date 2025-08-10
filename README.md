@@ -1,10 +1,10 @@
-# rexec - 远程执行工具
+# 🚀 rexec - 远程执行工具
 
 **中文** | [English](README.en.md)
 
 rexec 是一个简单的远程执行工具，支持 Linux 和 Windows 服务器的远程连接和基本系统信息获取。
 
-## 功能特性
+## ✨ 功能特性
 
 - 支持添加和管理远程 Linux 和 Windows 服务器
 - 统一使用 SSH 协议连接所有服务器（Linux 和 Windows）
@@ -13,7 +13,7 @@ rexec 是一个简单的远程执行工具，支持 Linux 和 Windows 服务器�
 - 提供连接测试功能，获取远程系统信息
 - 支持远程命令执行，输出重定向到本地终端
 
-## 安装
+## 📦 安装
 
 1. 确保已安装 Go 1.21 或更高版本
 2. 克隆或下载项目代码
@@ -24,9 +24,9 @@ go mod tidy
 go build -o rexec
 ```
 
-## 使用方法
+## 🔧 使用方法
 
-### 添加服务器
+### ➕ 添加服务器
 
 **添加 Linux 服务器：**
 ```bash
@@ -51,7 +51,7 @@ rexec add windows 192.168.1.101 22 mywindows
 
 **注意：** Windows 服务器需要安装并启用 OpenSSH Server 服务。
 
-### 测试连接
+### 🔍 测试连接
 
 ```bash
 rexec <服务器名称> test
@@ -75,7 +75,7 @@ rexec mywindows test
 - 系统运行时间、CPU 信息、内存信息
 - C盘使用情况
 
-### 执行远程命令
+### ⚡ 执行远程命令
 
 ```bash
 rexec exec <服务器名称> <命令> [参数...]
@@ -117,11 +117,11 @@ rexec exec mywindows systeminfo
 - 自动处理特殊字符转义，防止注入攻击
 - 支持标准输入、输出、错误流
 
-## 配置文件
+## ⚙️ 配置文件
 
 服务器配置信息存储在用户家目录的 `.rexec/config.yaml` 文件中。该文件包含所有添加的服务器信息（密码经过安全处理）。
 
-## 注意事项
+## ⚠️ 注意事项
 
 **通用：**
 - 配置文件中的敏感信息（如密码）会以明文形式存储，请确保系统安全
@@ -133,7 +133,7 @@ rexec exec mywindows systeminfo
 - Windows 10 版本 1809 及以上版本内置支持 OpenSSH
 - 旧版本 Windows 需要手动安装 OpenSSH Server
 
-## 未来计划
+## 🗺️ 未来计划
 
 - 支持 macOS 系统
 - 增强安全性（密码加密存储、主机密钥验证）
